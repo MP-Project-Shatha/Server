@@ -32,9 +32,9 @@
 | POST        | `/login`  | {email, password}                                         | 200            | 401          |  public `<Route>`               | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session |
 | POST        | `/logout` | n/a                                                      | 204            | 400          |  user only `<PrivateRoute>`               | Logs out the user                                            |
 | GET         | `/getexercises`        | n/a | 200               | 404   |  public `<Route>`          |Used to get medicl . |Show the user file
-| PUT         | `/updateexercises`  | {Health status, Treatments, diseases,  Conversion |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to update one          
-| get         | `/readexercises`  | {Health status, Treatments, diseases,  Conversion |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to get one    | 
-| Post         | `/createexercises`  | {Health status, Treatments, diseases,  Conversion |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to post one 
+| PUT         | `/updateexercises`  | Exercises |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to update one          
+| get         | `/readexercises`  | Exercises,user |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to get one    | 
+| Post         | `/createexercises`  |Exercises |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to post one 
 | Post         | `/ceratrole`  | {Role, Permossin |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to post one 
 
  
