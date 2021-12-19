@@ -8,7 +8,7 @@
 
 ➤ While running locally: http://localhost:5000
 
-➤ Trello: https://trello.com/
+➤ Trello: https://trello.com/b/H1Pu4xiD/master-piece-project
 
 ➤ Slides: https://Slides
 
