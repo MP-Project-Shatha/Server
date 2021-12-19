@@ -38,10 +38,9 @@
 | Post         | `/ceratrole`  | {Role, Permossin |  201           | 400      |  Admin only `<PrivateRoute>`    | Admin to post one 
 
  
-  ## UML Diagram
+
   
-  
-![uml backend](https://user-images.githubusercontent.com/92247967/146677451-e97a8a2f-4f45-49e1-8c8a-cbd5402728b4.png)
+
 
 ### ■ Installing Dependencies
 
