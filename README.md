@@ -39,7 +39,8 @@
 
  
 
-  
+  ## UML Diagram
+  ![UMLBacken-pm](https://user-images.githubusercontent.com/92248175/146688088-bd7f1f81-f868-44b9-b84f-60d3fd65e930.png)
 
 
 ### ■ Installing Dependencies
@@ -97,7 +98,54 @@ npm run start
 
 To run the server on production mode.
  
+ ## ⚪ Models
 
+### ▼ Users
+
+| key          | type                | options          | default value    |
+| ------------ | ------------------- | ---------------- | ---------------- |
+| email        | String              | required, unique | N/A              |
+| name         | String              | required         | N/A              |
+| password     | String              | N/A              | N/A              |
+| Role        | Schema <Roles>             | N/A              | N/A             |
+| passwordCode | String              | N/A              | ''               |
+| timestamp    | Date                | N/A              | Date now         |
+ 
+ 
+  ### ▼ Exercises
+
+| key          | type                | options          | default value    |
+| ------------ | ------------------- | ---------------- | ---------------- |
+| title       | String              | required,  | N/A              |
+| username         | Schema <User>              | required         | N/A              |
+| password     | String              | N/A              | N/A              |
+
+
+
+ 
+ 
+ ### ▼ Roles
+
+| key         | type   | options  | default value |
+| ----------- | ------ | -------- | ------------- |
+| role        | String | required | N/A           |
+| permissions | Array  | required | N/A           |
+| timestamp   | Date   | N/A      | Date now      |
+
+ 
+ ### ▼ Like
+
+| key          | type                | options          | default value    |
+| ------------ | ------------------- | ---------------- | ---------------- |
+| islike        | String              | required        | N/A              |
+| Role         | Schema <Roles>               | N/A         | N/A              |
+| Exercises     | String              | N/A              | N/A              |
+
+
+
+ 
+
+  
 
  ## ER Diagram
  ![ER-PM](https://user-images.githubusercontent.com/92248175/146686855-b092a80e-d7f0-47fc-8db4-424de8e8a4e0.png)
