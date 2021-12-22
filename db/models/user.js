@@ -23,7 +23,7 @@ const user = new mongoose.Schema(
 
     role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
   },
-  timestamp(Date)
+ 
 );
 
 module.exports = mongoose.model("User", user);
