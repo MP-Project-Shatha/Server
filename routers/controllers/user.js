@@ -9,16 +9,16 @@ const SECRET_RESET_KEY = process.env.SECRET_RESET_KEY;
 const CLIENT_URL = "http://localhost:3000";
 
 const login = (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   const SECRET_KEY = process.env.SECRET_KEY;
-  if (!(username && password)) {
+  if (!(email && password)) {
     res.status(200).json({ msg: "Kindly fill all inputs" });
   } else {
     userModel
-      .findOne({ $or: [{ username }] })
+      .findOne({ $or: [{ email }] })
       .then(async (result) => {
         if (result) {
-          if (username === result.username) {
+          if (email === result.email) {
             const payload = {
               id: result._id,
               role: result.role,
@@ -184,4 +184,19 @@ const activate = (req, res) => {
   }
 };
 
-module.exports = { register, activate, login };
+const addInfo = (req, res) => {
+  const { id, age, weight,active,height } = req.body;
+
+  userModel.findByIdAndUpdate(id,{age, weight,active,height}).then((result)=>{
+    res.json('Done')
+  })
+}
+
+const getInfo = (req, res) => {
+  const { id } = req.body;
+
+  userModel.findOne({id}).then((result)=>{
+    res.json(result)
+  }).catch(err=>console.log(err))
+}
+module.exports = { register, activate, login, addInfo, getInfo };
