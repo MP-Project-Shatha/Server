@@ -6,19 +6,19 @@ const OAuth2 = google.auth.OAuth2;
 const nodemailer = require("nodemailer");
 const SECRET_KEY = process.env.SECRET_KEY;
 const SECRET_RESET_KEY = process.env.SECRET_RESET_KEY;
-const CLIENT_URL = "http://localhost:5000";
+const CLIENT_URL = "http://localhost:3000";
 
 const login = (req, res) => {
-  const { username,  password } = req.body;
+  const { username, password } = req.body;
   const SECRET_KEY = process.env.SECRET_KEY;
-  if (!(( username) && password)) {
+  if (!(username && password)) {
     res.status(200).json({ msg: "Kindly fill all inputs" });
   } else {
     userModel
-      .findOne({ $or: [{ username }, ] })
+      .findOne({ $or: [{ username }] })
       .then(async (result) => {
         if (result) {
-          if ( username === result.username) {
+          if (username === result.username) {
             const payload = {
               id: result._id,
               role: result.role,
@@ -49,11 +49,11 @@ const login = (req, res) => {
   }
 };
 ///
-const resgister = (req, res) => {
+const register = (req, res) => {
   const { username, email, password, password2 } = req.body;
   let errors = [];
 
-  if (!username || !email || !password || !password2 ) {
+  if (!username || !email || !password || !password2) {
     errors.push({ msg: "Please enter all fields" });
   }
 
@@ -97,13 +97,9 @@ const resgister = (req, res) => {
         });
         const accessToken = oauth2Client.getAccessToken();
 
-        const token = jwt.sign(
-          { username, email, password },
-          SECRET_KEY,
-          {
-            expiresIn: "30m",
-          }
-        );
+        const token = jwt.sign({ username, email, password }, SECRET_KEY, {
+          expiresIn: "30m",
+        });
 
         const output = `
                   <h2>Please click on below link to activate your account</h2>
@@ -167,7 +163,6 @@ const activate = (req, res) => {
               username,
               email,
               password,
-           
             });
 
             bcrypt.hash(newUser.password, 10, (err, hash) => {
@@ -189,4 +184,4 @@ const activate = (req, res) => {
   }
 };
 
-module.exports = { resgister, activate, login };
+module.exports = { register, activate, login };
