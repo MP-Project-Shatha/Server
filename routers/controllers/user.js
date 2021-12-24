@@ -185,18 +185,40 @@ const activate = (req, res) => {
 };
 
 const addInfo = (req, res) => {
-  const { id, age, weight,active,height } = req.body;
+  // كمليه
+  const { id, age, weight, active, height } = req.body;
 
-  userModel.findByIdAndUpdate(id,{age, weight,active,height}).then((result)=>{
-    res.json('Done')
-  })
-}
+  userModel
+    .findByIdAndUpdate(id, {
+      sex,
+      age,
+      weight,
+      height,
+      wrist,
+      waist,
+      chest,
+      thigh,
+      pelvis,
+      ankle,
+      musclediameter,
+      fatpercentage,
+      bonepercentage,
+      active,
+      eating,
+    })
+    .then((result) => {
+      res.json("Done");
+    });
+};
 
 const getInfo = (req, res) => {
   const { id } = req.body;
 
-  userModel.findOne({id}).then((result)=>{
-    res.json(result)
-  }).catch(err=>console.log(err))
-}
+  userModel
+    .findOne({ id })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => console.log(err));
+};
 module.exports = { register, activate, login, addInfo, getInfo };
