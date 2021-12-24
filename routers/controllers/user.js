@@ -6,7 +6,7 @@ const OAuth2 = google.auth.OAuth2;
 const nodemailer = require("nodemailer");
 const SECRET_KEY = process.env.SECRET_KEY;
 const SECRET_RESET_KEY = process.env.SECRET_RESET_KEY;
-const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "http://localhost:5000";
 
 const login = (req, res) => {
   const { email, password } = req.body;
@@ -163,6 +163,7 @@ const activate = (req, res) => {
               username,
               email,
               password,
+              role:"61c5ca17259d8cdada80a411"
             });
 
             bcrypt.hash(newUser.password, 10, (err, hash) => {
@@ -221,4 +222,151 @@ const getInfo = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
-module.exports = { register, activate, login, addInfo, getInfo };
+
+
+const gotoReset = (req, res) => {
+  const { token } = req.params;
+
+  if (token) {
+    jwt.verify(token, SECRET_RESET_KEY, (err, decodedToken) => {
+      if (err) {
+        res.json({ error: "Incorrect or expired link! Please try again." });
+      } else {
+        const { _id } = decodedToken;
+        userModel.findById(_id, (err, user) => {
+          if (err) {
+            res.json({ error: "User with email ID does not exist! Please try again." });
+          } else {
+            res.json({ success: _id});
+          }
+        });
+      }
+    });
+  } else {
+    console.log("Password reset error!");
+  }
+};
+
+
+const resetPassword = (req, res) => {
+  var { password, password2 } = req.body;
+  const id = req.params.id;
+
+  if (!password || !password2) {
+    res.json({error:"Please enter all fields."});
+  }
+
+  else if (password.length < 8) {
+    res.json({error:"Password must be at least 8 characters."});
+  }
+
+  else if (password != password2) {
+    res.json({error:"Passwords do not match."});
+  } else {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) throw err;
+        password = hash;
+
+        userModel.findByIdAndUpdate(
+          { _id: id },
+          { password },
+          function (err, result) {
+            if (err) {
+              res.json({error:"Error resetting password!"});
+            } else {
+              res.json({error:"Password reset successfully!"});
+            }
+          }
+        );
+      });
+    });
+  }
+};
+
+ const forgotPassword = (req, res) => {
+  const { email } = req.body;
+
+  let errors = [];
+
+  if (!email) {
+    errors.push({ msg: "Please enter an email ID" });
+  }
+
+  if (errors.length > 0) {
+    res.json({ errors });
+  } else {
+    userModel.findOne({ email: email }).then((user) => {
+      if (!user) {
+        errors.push({ msg: "User with Email ID does not exist!" });
+        res.json({ errors });
+      } else {
+        const oauth2Client = new OAuth2(
+          "173872994719-pvsnau5mbj47h0c6ea6ojrl7gjqq1908.apps.googleusercontent.com", // ClientID
+          "OKXIYR14wBB_zumf30EC__iJ", // Client Secret
+          "https://developers.google.com/oauthplayground" // Redirect URL
+        );
+
+        oauth2Client.setCredentials({
+          refresh_token:
+            "1//04T_nqlj9UVrVCgYIARAAGAQSNwF-L9IrGm-NOdEKBOakzMn1cbbCHgg2ivkad3Q_hMyBkSQen0b5ABfR8kPR18aOoqhRrSlPm9w",
+        });
+        const accessToken = oauth2Client.getAccessToken();
+
+        const token = jwt.sign({ _id: user._id }, SECRET_RESET_KEY, {
+          expiresIn: "30m",
+        });
+        const output = `
+                <h2>Please click on below link to reset your account password</h2>
+                <p>${CLIENT_URL}/forgot/${token}</p>
+                <p><b>NOTE: </b> The activation link expires in 30 minutes.</p>
+                `;
+
+        userModel.updateOne({ resetLink: token }, (err, success) => {
+          if (err) {
+            errors.push({ msg: "Error resetting password!" });
+            res.json({ errors });
+          } else {
+            const transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                type: "OAuth2",
+                user: "nodejsa@gmail.com",
+                clientId:
+                  "173872994719-pvsnau5mbj47h0c6ea6ojrl7gjqq1908.apps.googleusercontent.com",
+                clientSecret: "OKXIYR14wBB_zumf30EC__iJ",
+                refreshToken:
+                  "1//04T_nqlj9UVrVCgYIARAAGAQSNwF-L9IrGm-NOdEKBOakzMn1cbbCHgg2ivkad3Q_hMyBkSQen0b5ABfR8kPR18aOoqhRrSlPm9w",
+                accessToken: accessToken,
+              },
+            });
+
+            const mailOptions = {
+              from: '"Auth Admin" <nodejsa@gmail.com>', // sender address
+              to: email, // list of receivers
+              subject: "Account Password Reset: NodeJS Auth ✔", // Subject line
+              html: output, // html body
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                console.log(error);
+                errors.push({
+                  msg: "Something went wrong on our end. Please try again later.",
+                });
+                res.json({ errors });
+              } else {
+                console.log("Mail sent : %s", info.response);
+                res.json({
+                  success:
+                    "Password reset link sent to email ID. Please follow the instructions.",
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+};
+module.exports = { register, activate, login, addInfo, getInfo,forgotPassword,gotoReset,resetPassword };
