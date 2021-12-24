@@ -7,8 +7,9 @@ const exercises = new mongoose.Schema(
     video: { type: String },
     desc: { type: String, require: true },
     time: { type: Date },
+     show: {type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    like: { type: mongoose.Schema.Types.ObjectId, ref: "Like" },
+    like: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
   },
   {
     timestamps: true,

@@ -163,7 +163,7 @@ const activate = (req, res) => {
               username,
               email,
               password,
-              role:"61c5ca17259d8cdada80a411"
+              role: "61c5ca17259d8cdada80a411",
             });
 
             bcrypt.hash(newUser.password, 10, (err, hash) => {
@@ -186,12 +186,28 @@ const activate = (req, res) => {
 };
 
 const addInfo = (req, res) => {
-  // كمليه
-  const { id, age, weight, active, height } = req.body;
+  const {
+    id,
+    gender,
+    age,
+    weight,
+    height,
+    wrist,
+    waist,
+    chest,
+    thigh,
+    pelvis,
+    ankle,
+    musclediameter,
+    fatpercentage,
+    bonepercentage,
+    active,
+    eating,
+  } = req.body;
 
   userModel
     .findByIdAndUpdate(id, {
-      sex,
+      gender,
       age,
       weight,
       height,
@@ -223,7 +239,6 @@ const getInfo = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-
 const gotoReset = (req, res) => {
   const { token } = req.params;
 
@@ -235,9 +250,11 @@ const gotoReset = (req, res) => {
         const { _id } = decodedToken;
         userModel.findById(_id, (err, user) => {
           if (err) {
-            res.json({ error: "User with email ID does not exist! Please try again." });
+            res.json({
+              error: "User with email ID does not exist! Please try again.",
+            });
           } else {
-            res.json({ success: _id});
+            res.json({ success: _id });
           }
         });
       }
@@ -247,21 +264,16 @@ const gotoReset = (req, res) => {
   }
 };
 
-
 const resetPassword = (req, res) => {
-  var { password, password2 } = req.body;
+  const { password, password2 } = req.body;
   const id = req.params.id;
 
   if (!password || !password2) {
-    res.json({error:"Please enter all fields."});
-  }
-
-  else if (password.length < 8) {
-    res.json({error:"Password must be at least 8 characters."});
-  }
-
-  else if (password != password2) {
-    res.json({error:"Passwords do not match."});
+    res.json({ error: "Please enter all fields." });
+  } else if (password.length < 8) {
+    res.json({ error: "Password must be at least 8 characters." });
+  } else if (password != password2) {
+    res.json({ error: "Passwords do not match." });
   } else {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(password, salt, (err, hash) => {
@@ -273,9 +285,9 @@ const resetPassword = (req, res) => {
           { password },
           function (err, result) {
             if (err) {
-              res.json({error:"Error resetting password!"});
+              res.json({ error: "Error resetting password!" });
             } else {
-              res.json({error:"Password reset successfully!"});
+              res.json({ error: "Password reset successfully!" });
             }
           }
         );
@@ -284,7 +296,7 @@ const resetPassword = (req, res) => {
   }
 };
 
- const forgotPassword = (req, res) => {
+const forgotPassword = (req, res) => {
   const { email } = req.body;
 
   let errors = [];
@@ -369,4 +381,13 @@ const resetPassword = (req, res) => {
     });
   }
 };
-module.exports = { register, activate, login, addInfo, getInfo,forgotPassword,gotoReset,resetPassword };
+module.exports = {
+  register,
+  activate,
+  login,
+  addInfo,
+  getInfo,
+  forgotPassword,
+  gotoReset,
+  resetPassword,
+};
