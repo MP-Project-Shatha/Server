@@ -52,13 +52,12 @@ const getAllExercises = (req, res) => {
   }
 };
 
-//
 const updateExercises = (req, res) => {
   const { _id } = req.params;
   const { desc } = req.body;
   try {
-    exercisesModel.findOne({ _id: id }).then((item) => {
-      if (item.user == req.token.id) {
+    exercisesModel.findOne({ _id: _id }).then((item) => {
+      if (item) {
         exercisesModel
           .findOneAndUpdate(
             { _id: _id },
@@ -68,7 +67,7 @@ const updateExercises = (req, res) => {
           .then((result) => {
             res.status(200).json(result);
           });
-      } else if (req.token.role == "61c5c9f9259d8cdada80a40d") {
+
         exercisesModel
           .findOneAndUpdate(
             { _id: _id },
@@ -79,14 +78,13 @@ const updateExercises = (req, res) => {
             res.status(200).json(result);
           });
       } else {
-        res.status(403).send("forbbiden");
+        res.status(404).send("Exercises not found");
       }
     });
   } catch (error) {
     res.status(400).json(error);
   }
 };
-
 module.exports = {
   newExercises,
   getExercises,

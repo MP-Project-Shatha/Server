@@ -6,7 +6,5 @@ const likeRouter = express.Router();
 
 
 const { newLike } = require("../controllers/like");
-
-likeRouter.get("/like/:id", newLike);
-
+likeRouter.post("/like/:useId/:exercisesId", newLike);
 module.exports = likeRouter;
