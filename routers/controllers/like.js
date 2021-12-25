@@ -1,48 +1,32 @@
 const likeModel = require("../../db/models/like");
-const exercisesModel = require("../../db/models/exercises");
+// const exercisesModel = require("../../db/models/exercises");
 
 const newLike = (req, res) => {
-  const { id } = req.params;
-  likeModel
-    .findOne({ user: req.user._id, exercises: id })
-    .then((found) => {
-      if (found) {
-        //if liked before just change to opposite
-        likeModel
-          .findOneAndDelete({ user: req.user._id, exercises: id })
-          .then((data) => {
-            exercisesModel
-              .findByIdAndUpdate(id, { $pull: { like: data._id } })
-              .then((result) => {
-                res.status(201).json({ result: "removeLike" });
-              })
-              .catch((err) => {
-                res.status(400).json(err);
-              });
-          })
-          .catch((err) => {
-            res.status(400).json(err);
+  const { userId, exercisesId } = req.params;
+  try {
+    likeModel
+      .findOneAndDelete({ $and: [{ desc: exercisesId }, { user: userId }] })
+      .then((item) => {
+        if (item) {
+          res.status(200).send("like deleted");
+        } else {
+          const newLike = new likeModel({
+            user: userId,
+            desc: exercisesId,
           });
-      } else {
-        //never been liked, do new like
-        const newLike = new likeModel({
-          like: true,
-          user: req.user._id,
-          exercises: id,
-        });
-        newLike.save().then((result) => {
-          exercisesModel
-            .findByIdAndUpdate(id, { $push: { like: result._id } })
+          newLike
+            .save()
             .then((result) => {
-              console.log(result);
+              res.status(200).json(result);
+            })
+            .catch((err) => {
+              res.status(400).send(err);
             });
-          res.status(201).json({ result: "newLike" });
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
+        }
+      });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 module.exports = { newLike };
