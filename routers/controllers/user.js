@@ -381,6 +381,51 @@ const forgotPassword = (req, res) => {
     });
   }
 };
+
+//////////
+const findUserByEmail = (req, res) => {
+  const { email } = req.params;
+  userModel
+    .find({ email: `${email}` })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+const editFullName = (req, res) => {
+  const { email } = req.params;
+  const { username } = req.body;
+  userModel
+    .findOneAndUpdate(
+      { email: `${email}` },
+      { $set: { username } },
+      { new: true }
+    )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+const deleteUser = (req, res) => {
+  const { id } = req.params;
+
+  userModel
+    .findOneAndRemove({ _id: id }, { new: true })
+    .exec()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
+
 module.exports = {
   register,
   activate,
@@ -390,4 +435,7 @@ module.exports = {
   forgotPassword,
   gotoReset,
   resetPassword,
+  findUserByEmail,
+  editFullName,
+  deleteUser,
 };
