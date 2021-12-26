@@ -6,7 +6,7 @@ const OAuth2 = google.auth.OAuth2;
 const nodemailer = require("nodemailer");
 const SECRET_KEY = process.env.SECRET_KEY;
 const SECRET_RESET_KEY = process.env.SECRET_RESET_KEY;
-const CLIENT_URL = "http://localhost:5000";
+const CLIENT_URL = "http://localhost:3000";
 
 const login = (req, res) => {
   const { email, password } = req.body;
@@ -186,6 +186,7 @@ const activate = (req, res) => {
 };
 
 const addInfo = (req, res) => {
+  
   const {
     id,
     gender,
@@ -229,7 +230,7 @@ const addInfo = (req, res) => {
 };
 
 const getInfo = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   userModel
     .findOne({ id })
