@@ -1,16 +1,16 @@
 const exercisesModel = require("../../db/models/exercises");
 
 const newExercises = (req, res) => {
-  const { img, desc, user, title, video } = req.body;
+  const { img, desc, user, title, video,type } = req.body;
   // const { _id } = req.params;
   try {
     const newExercises = new exercisesModel({
       img,
       desc,
-      time: Date(),
       user,
       video,
       title,
+      type,
     });
     newExercises
       .save()

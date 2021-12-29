@@ -10,6 +10,7 @@ const exercises = new mongoose.Schema(
      show: {type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     like: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
+    type:{ type: String}
   },
   {
     timestamps: true,
