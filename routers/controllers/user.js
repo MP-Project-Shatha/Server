@@ -50,7 +50,7 @@ const login = (req, res) => {
 };
 ///
 const register = (req, res) => {
-  const { username, email, password, password2 } = req.body;
+  const { username, email, password, password2,img } = req.body;
   let errors = [];
 
   if (!username || !email || !password || !password2) {
@@ -72,6 +72,7 @@ const register = (req, res) => {
       email,
       password,
       password2,
+      img,
     });
   } else {
     userModel.findOne({ email: email }).then((user) => {
@@ -83,6 +84,7 @@ const register = (req, res) => {
           email,
           password,
           password2,
+          img,
         });
       } else {
         const oauth2Client = new OAuth2(
