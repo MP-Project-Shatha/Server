@@ -2,7 +2,7 @@ const exercisesModel = require("../../db/models/exercises");
 
 const newExercises = (req, res) => {
   const { img, desc, user, title, video,type } = req.body;
-  // const { _id } = req.params;
+  // const { _id } = req.params;vff
   try {
     const newExercises = new exercisesModel({
       img,
@@ -85,6 +85,7 @@ const updateExercises = (req, res) => {
     res.status(400).json(error);
   }
 };
+
 module.exports = {
   newExercises,
   getExercises,
