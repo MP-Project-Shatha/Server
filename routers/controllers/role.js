@@ -16,6 +16,7 @@ const newrolr = (req, res) => {
       res.status(err);
     });
 };
+// fo
 
 const getrole = (req, res) => {
   rolemodel
