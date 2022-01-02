@@ -206,7 +206,8 @@ const addInfo = (req, res) => {
     bonepercentage,
     active,
     eating,
-    nutrition
+    nutrition,
+    armdiameter,
   } = req.body;
 
   userModel
@@ -226,7 +227,8 @@ const addInfo = (req, res) => {
       bonepercentage,
       active,
       eating,
-      nutrition
+      nutrition,
+      armdiameter,
     })
     .then((result) => {
       res.json(result);
