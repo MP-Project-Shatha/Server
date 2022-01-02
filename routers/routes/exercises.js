@@ -20,3 +20,5 @@ exercisesRouter.put("/updateExercises/:_id", updateExercises);
 exercisesRouter.post("/newExercises", newExercises);
 
 module.exports = exercisesRouter;
+
+
