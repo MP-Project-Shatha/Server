@@ -188,7 +188,7 @@ const activate = (req, res) => {
 };
 
 const addInfo = (req, res) => {
-  
+  // Information
   const {
     id,
     gender,
