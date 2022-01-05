@@ -15,7 +15,7 @@ const login = (req, res) => {
     res.status(200).json({ msg: "Kindly fill all inputs" });
   } else {
     userModel
-      .findOne({ $or: [{ email }] })
+      .findOne({ email: email })
       .then(async (result) => {
         if (result) {
           if (email === result.email) {
@@ -23,6 +23,8 @@ const login = (req, res) => {
               id: result._id,
               role: result.role,
             };
+            console.log(payload);
+
             const options = {
               expiresIn: "30m",
             };
@@ -32,15 +34,15 @@ const login = (req, res) => {
               result.password
             );
             if (unhashPassword) {
-              res.status(200).json({ result, token });
+              res.status(200).json(result);
             } else {
-              res.status(200).json("invalid username/ password");
+              res.status(400).json("invalid username/ password");
             }
           } else {
-            res.status(200).json("invalid username/ password");
+            res.status(400).json("invalid username/ password");
           }
         } else {
-          res.status(200).json("Username  does not exist");
+          res.status(400).json("invalid username/ password");
         }
       })
       .catch((err) => {
@@ -50,7 +52,7 @@ const login = (req, res) => {
 };
 ///
 const register = (req, res) => {
-  const { username, email, password, password2,img } = req.body;
+  const { username, email, password, password2, img } = req.body;
   let errors = [];
 
   if (!username || !email || !password || !password2) {
@@ -186,6 +188,7 @@ const activate = (req, res) => {
     console.log("Account activation error!");
   }
 };
+////////////////////////////////////////////////////////////////
 
 const addInfo = (req, res) => {
   // Information
@@ -283,7 +286,8 @@ const resetPassword = (req, res) => {
     res.json({ error: "Passwords do not match." });
   } else {
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
+      console.log(bcrypt.hash, "oliuytrew");
+      bcrypt.hash(password, 10, (err, hash) => {
         if (err) throw err;
         password = hash;
 
@@ -431,7 +435,6 @@ const deleteUser = (req, res) => {
       res.json(err);
     });
 };
-
 
 module.exports = {
   register,

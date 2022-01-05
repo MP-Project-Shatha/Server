@@ -6,6 +6,8 @@ const {
   getExercises,
   getAllExercises,
   updateExercises,
+  searchUser,
+
 } = require("../controllers/exercises");
 
 const authentication = require("./../middleware/authentication");
@@ -18,6 +20,8 @@ exercisesRouter.get("/allExercises", getAllExercises);
 exercisesRouter.put("/updateExercises/:_id", updateExercises);
 
 exercisesRouter.post("/newExercises", newExercises);
+exercisesRouter.post("/search", searchUser);
+
 
 module.exports = exercisesRouter;
 
