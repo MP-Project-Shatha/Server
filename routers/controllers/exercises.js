@@ -85,10 +85,23 @@ const updateExercises = (req, res) => {
     res.status(400).json(error);
   }
 };
+const searchUser = (req, res) =>{
+  
+  const { title } = req.body;
 
+  try {
+    exercisesModel.findOne({ title}).then((result) => {
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+}
 module.exports = {
   newExercises,
   getExercises,
   getAllExercises,
   updateExercises,
+  searchUser,
+
 };
