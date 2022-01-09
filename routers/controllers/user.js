@@ -34,7 +34,7 @@ const login = (req, res) => {
               result.password
             );
             if (unhashPassword) {
-              res.status(200).json(result);
+              res.status(200).json({result,token});
             } else {
               res.status(400).json("invalid username/ password");
             }
