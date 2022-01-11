@@ -7,6 +7,7 @@ const {
   getAllExercises,
   updateExercises,
   searchUser,
+  softDel,
 
 } = require("../controllers/exercises");
 
@@ -21,6 +22,7 @@ exercisesRouter.put("/updateExercises/:_id", updateExercises);
 
 exercisesRouter.post("/newExercises", newExercises);
 exercisesRouter.post("/search", searchUser);
+exercisesRouter.put("/softDelete/:_id", softDel);
 
 
 module.exports = exercisesRouter;

@@ -51,7 +51,49 @@ const getAllExercises = (req, res) => {
     res.status(400).json(error);
   }
 };
-
+const softDel = (req, res) => {
+  const { _id } = req.params;
+  try {
+    exercisesModel.findOne({ _id: _id }).then((item) => {
+      
+      if (item) {
+        exercisesModel.findById({ _id: _id }).then((item) => {
+          if (item.show == false) {
+            exercisesModel
+              .findByIdAndUpdate(
+                { _id: _id },
+                { $set: { show: true } },
+                { new: true }
+              )
+              .then((result) => {
+                res.status(200).json(result);
+              })
+              .catch((err) => {
+                res.status(400).json(err);
+              });
+          } else {
+            exercisesModel
+              .findByIdAndUpdate(
+                { _id: _id },
+                { $set: { show: false } },
+                { new: true }
+              )
+              .then((result) => {
+                res.status(200).json(result);
+              })
+              .catch((err) => {
+                res.status(400).json(err);
+              });
+          }
+        });
+      } else {
+        res.status(403).send("Forbidden");
+      }
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 const updateExercises = (req, res) => {
   const { _id } = req.params;
   const { desc } = req.body;
@@ -103,5 +145,5 @@ module.exports = {
   getAllExercises,
   updateExercises,
   searchUser,
-
+  softDel,
 };
