@@ -188,7 +188,7 @@ const activate = (req, res) => {
     console.log("Account activation error!");
   }
 };
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 const addInfo = (req, res) => {
   // Information
@@ -213,6 +213,7 @@ const addInfo = (req, res) => {
     armdiameter,
   } = req.body;
 
+  const add = {};
   userModel
     .findByIdAndUpdate(id, {
       gender,
@@ -436,6 +437,29 @@ const deleteUser = (req, res) => {
     });
 };
 
+const updateProfile =(req,res)=>{
+  try {
+    const _id = req.params._id;
+    const { username, email } = req.body;
+    
+    const update = {};
+
+    if (username) update.username = username;
+    if (email) update.email = email;
+   
+    userModel
+      .findByIdAndUpdate(_id, update, { new: true })
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json({ error: err.message });
+      });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
 module.exports = {
   register,
   activate,
@@ -448,4 +472,5 @@ module.exports = {
   findUserByEmail,
   editFullName,
   deleteUser,
+  updateProfile,
 };

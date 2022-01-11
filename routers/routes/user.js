@@ -13,6 +13,7 @@ const {
   findUserByEmail,
   editFullName,
   deleteUser,
+  updateProfile,
 } = require("./../controllers/user");
 const authentication = require("./../middleware/authentication");
 
@@ -28,5 +29,6 @@ userRoute.post("/reset/:id", resetPassword);
 userRoute.get("/email/:email", findUserByEmail);
 userRoute.put("/edit/:email", editFullName);
 userRoute.delete("/delete/:id", deleteUser);
+userRoute.put("/updateProfile/:_id", updateProfile);
 
 module.exports = userRoute;
