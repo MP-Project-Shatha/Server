@@ -22,8 +22,8 @@ const user = new mongoose.Schema(
     bonepercentage: { type: String },
     active: { type: String },
     nutrition: { type: String },
-
     role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
+    plan: [{ type: mongoose.Schema.Types.ObjectId, ref: "Exercises" }],
   },
  
 );

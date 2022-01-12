@@ -1,4 +1,5 @@
 const userModel = require("../../db/models/user");
+
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const { google } = require("googleapis");
@@ -188,6 +189,72 @@ const activate = (req, res) => {
     console.log("Account activation error!");
   }
 };
+
+const yourExercises = (req, res) => {
+  const { email, ObjectId } = req.params;
+  newUser.findOne({ ObjectId: req.params.ObjectId }).then((user) => {
+   
+    newUser
+      .findOneAndUpdate(
+        { email: email },
+        { $push: { plan: ObjectId } },
+        { new: true }
+      )
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+    
+  });
+};
+// /////////////////////////////////////////////////////////////////
+const ExercisesUser = (req, res) => {
+  const { email, _id } = req.params;
+  userModel
+    .findOneAndUpdate(
+      { email: email },
+      { $addToSet: { plan: _id } },
+      { new: true }
+    )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+const RemoveExercisesUser = (req, res) => {
+  const { email, _id } = req.params;
+  userModel
+    .findOneAndUpdate(
+      { email: email },
+      { $pull: { plan: _id } },
+      { new: true }
+    )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+const getExercises = (req, res) => {
+  const { email } = req.params;
+  userModel
+    .find({ email: email })
+    .populate("plan")
+    .exec()
+    .then((result) => {
+      res.json(result);
+    })
+
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
 ////////////////////////////////////////////////////////////
 
 const addInfo = (req, res) => {
@@ -473,4 +540,8 @@ module.exports = {
   editFullName,
   deleteUser,
   updateProfile,
+  yourExercises,
+  ExercisesUser,
+  getExercises,
+  RemoveExercisesUser,
 };
