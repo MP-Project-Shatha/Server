@@ -34,15 +34,15 @@ const login = (req, res) => {
               result.password
             );
             if (unhashPassword) {
-              res.status(200).json({result,token});
+              res.status(200).json({ result, token });
             } else {
-              res.status(400).json("invalid username/ password");
+              res.status(200).json("invalid username/ password");
             }
           } else {
-            res.status(400).json("invalid username/ password");
+            res.status(200).json("invalid username/ password");
           }
         } else {
-          res.status(400).json("invalid username/ password");
+          res.status(200).json("invalid username/ password");
         }
       })
       .catch((err) => {
@@ -437,16 +437,16 @@ const deleteUser = (req, res) => {
     });
 };
 
-const updateProfile =(req,res)=>{
+const updateProfile = (req, res) => {
   try {
     const _id = req.params._id;
     const { username, email } = req.body;
-    
+
     const update = {};
 
     if (username) update.username = username;
     if (email) update.email = email;
-   
+
     userModel
       .findByIdAndUpdate(_id, update, { new: true })
       .then((result) => {
@@ -458,7 +458,7 @@ const updateProfile =(req,res)=>{
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-}
+};
 
 module.exports = {
   register,
