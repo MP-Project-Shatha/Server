@@ -4,13 +4,7 @@ const cors = require("cors");
 const db = require("./db/index");
 const app = express();
 dotenv.config();
-app.use(
-  cors({
-    origin: "http://localhost:3000", 
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 const userRoute = require("./routers/routes/user");
 const roleRouter = require("./routers/routes/role");
