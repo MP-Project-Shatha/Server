@@ -18,10 +18,10 @@ const newExercises = (req, res) => {
         res.status(200).json(result);
       })
       .catch((err) => {
-        res.status(200).send(err);
+        res.status(400).send(err);
       });
   } catch (error) {
-    res.status(200).send(error);
+    res.status(400).send(error);
   }
 };
 //
@@ -44,7 +44,7 @@ const getExercises = (req, res) => {
 
 const getAllExercises = (req, res) => {
   try {
-    exercisesModel.find({ show: false }).then((result) => {
+    exercisesModel.find({ show: false }).populate("like").then((result) => {
       res.status(200).json(result);
     });
   } catch (error) {
