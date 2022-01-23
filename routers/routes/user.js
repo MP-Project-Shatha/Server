@@ -25,7 +25,7 @@ userRoute.post("/register", register);
 userRoute.get("/activate/:token", activate);
 userRoute.post("/login", login);
 userRoute.post("/addInfo", addInfo);
-userRoute.get("/getInfo/:id", getInfo);
+userRoute.post("/getInfo/:id", getInfo);
 userRoute.post("/forgott", forgotPassword);
 userRoute.get("/forgot/:token", gotoReset);
 userRoute.post("/reset/:id", resetPassword);
