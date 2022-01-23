@@ -7,7 +7,7 @@ const OAuth2 = google.auth.OAuth2;
 const nodemailer = require("nodemailer");
 const SECRET_KEY = process.env.SECRET_KEY;
 const SECRET_RESET_KEY = process.env.SECRET_RESET_KEY;
-const CLIENT_URL = "https://project-client-shatha.herokuapp.com/";
+const CLIENT_URL = "https://project-server-shatha.herokuapp.com";
 
 const login = (req, res) => {
   const { email, password } = req.body;
