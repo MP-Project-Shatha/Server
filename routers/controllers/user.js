@@ -307,6 +307,16 @@ const addInfo = (req, res) => {
 };
 
 const getInfo = (req, res) => {
+  const { _id } = req.params;
+
+  userModel
+    .findOne({ _id })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => console.log(err));
+};
+const getInfoAdvices = (req, res) => {
   const { id } = req.params;
 
   userModel
@@ -533,6 +543,7 @@ module.exports = {
   login,
   addInfo,
   getInfo,
+  getInfoAdvices,
   forgotPassword,
   gotoReset,
   resetPassword,

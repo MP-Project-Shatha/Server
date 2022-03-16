@@ -7,6 +7,7 @@ const {
   login,
   addInfo,
   getInfo,
+  getInfoAdvices,
   forgotPassword,
   gotoReset,
   resetPassword,
@@ -25,11 +26,12 @@ userRoute.post("/register", register);
 userRoute.get("/activate/:token", activate);
 userRoute.post("/login", login);
 userRoute.post("/addInfo", addInfo);
-userRoute.post("/getInfo/:id", getInfo);
+userRoute.post("/getInfo/:_id", getInfo);
+userRoute.post("/getInfoAdvices/:id", getInfoAdvices);
 userRoute.post("/forgott", forgotPassword);
 userRoute.get("/forgot/:token", gotoReset);
 userRoute.post("/reset/:id", resetPassword);
-// dd
+// 
 userRoute.get("/email/:email", findUserByEmail);
 userRoute.put("/edit/:email", editFullName);
 userRoute.delete("/delete/:id", deleteUser);
