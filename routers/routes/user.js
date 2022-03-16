@@ -29,7 +29,7 @@ userRoute.post("/getInfo/:id", getInfo);
 userRoute.post("/forgott", forgotPassword);
 userRoute.get("/forgot/:token", gotoReset);
 userRoute.post("/reset/:id", resetPassword);
-// 
+// dd
 userRoute.get("/email/:email", findUserByEmail);
 userRoute.put("/edit/:email", editFullName);
 userRoute.delete("/delete/:id", deleteUser);
