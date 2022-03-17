@@ -14,8 +14,12 @@ const newrolr = (req, res) => {
     })
     .catch((err) => {
       res.status(err);
+      
     });
 };
+
+
+
 
 
 const getrole = (req, res) => {
